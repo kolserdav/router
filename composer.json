@@ -1,0 +1,19 @@
+{
+    "name": "kolserdav/router",
+    "description": "Routing module",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "kolserdav",
+            "email": "serega12101983@gmail.com"
+        }
+    ],
+    "autoload":{
+     "psr-4": {"Avir\\Router\\" : "src/"}
+    },
+    "require": {}
+}
