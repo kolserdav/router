@@ -1,0 +1,36 @@
+<?php
+require 'vendor\autoload.php';
+
+use Avir\Router\Route;
+use Avir\Router\Listener\Filter;
+$route = new Route();
+$list = new Filter();
+$root = $list->getRoot();
+$namespace = $list->getNamespace().'Controller';
+$file =  "$root/Controller/TestController.php";
+$fileErr =  "$root/Controller/ErrorPage .php";
+$fileT = __DIR__."/src/Controller/TestController.php";
+$fileE = __DIR__."/src/Controller/ErrorPage.php";
+$fileTestC = file_get_contents($fileT);
+$fileTestE = file_get_contents($fileE);
+echo "\nMake catalog /Controller ...\n";
+@mkdir("$root/Controller");
+echo "Copy file /Controller/TestController.php ...\n";
+copy($fileT, $file);
+echo "Copy file /Controller/ErrorPage.php ...\n";
+copy($fileE, $fileErr);
+echo "Rewriting namespaces ...\n";
+$fileTest = str_replace('Avir\Router\Controller', $namespace, $fileTestC);
+$fileError = str_replace('Avir\Router\Controller', $namespace, $fileTestE);
+$res = fopen($file,'w');
+fwrite($res, $fileTest);
+fclose($res);
+$resE = fopen($fileErr,'w');
+fwrite($resE, $fileError);
+fclose($resE);
+echo "Make catalog /config/route ...\n";
+@mkdir("$root/config");
+@mkdir("$root/config/route");
+echo "Copy file /config/route/routes.yaml";
+copy('config/route/routes.yaml',"$root/config/route/routes.yaml");
+echo "\n\nInstallation route module kolserdav/router is complete.\n";

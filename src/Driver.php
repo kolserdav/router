@@ -10,10 +10,20 @@ namespace Avir\Router;
 
 class Driver extends RouteStation
 {
-    public static function getOperator(){
-        return new Operator();
+    /**
+     * @return Route
+     */
+    public static function getManager():Route
+    {
+        return new Route();
     }
 
+    /**
+     * Transfer properties from object to object
+     * @param $worker
+     * @param $oppo
+     * @return mixed
+     */
     public static function journal($worker, $oppo)
     {
         $worker->method = $oppo->method;

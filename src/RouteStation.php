@@ -14,7 +14,7 @@ abstract class RouteStation
     /**
      * @var string
      */
-    protected $uri;
+    public $uri;
 
     /**
      * @var string
@@ -32,11 +32,29 @@ abstract class RouteStation
     protected $uri_base;
 
     /**
-     * @var bool
+     * @var integer
      */
-    protected $method_base;
+    protected $id;
 
+    /**
+     * @var string
+     */
+    protected $operation;
 
+    /**
+     * @var string
+     */
+    protected $class;
+
+    /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
+     * Getting the source data
+     * @param array $data
+     */
     public function getParams(array $data = array())
     {
         $this->method = $_SERVER['REQUEST_METHOD'];

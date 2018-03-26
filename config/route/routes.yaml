@@ -1,5 +1,15 @@
-Controller::index : /                 #comment [optional]
-UsersController::users : /users       #users
-UsersController::user : /user/{id}    #user with id
-TasksController::tasks : /tasks       #tasks
-RouterController::router : /modules/router/      #router
+#index :                                           #route name [optional]
+      #path : /                                    #'path' : path of route
+      #controller: IndexController::indexPublic    #'controller' : class and operation of route
+#users :
+      #path : /users/
+      #controller : User\UserConroller::usersPublic #if your controller place in Controller\User\UserController
+#user :
+      #path : /user/{id}                            #use 'id' in UserController with $this->id
+      #controller : User\UserController::userPublic
+tests :
+      path: /tests/
+      controller: TestController::tests
+test :
+      path : /test/{id}
+      controller : TestController::test
