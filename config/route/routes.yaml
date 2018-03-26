@@ -1,0 +1,5 @@
+Controller::index : /                 #comment [optional]
+UsersController::users : /users       #users
+UsersController::user : /user/{id}    #user with id
+TasksController::tasks : /tasks       #tasks
+RouterController::router : /modules/router/      #router

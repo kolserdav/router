@@ -15,5 +15,7 @@
     "autoload":{
      "psr-4": {"Avir\\Router\\" : "src/"}
     },
-    "require": {}
+    "require": {
+        "symfony/yaml": "^4.0"
+    }
 }
