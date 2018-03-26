@@ -10,12 +10,11 @@ namespace Avir\Router\Listener;
 
 
 use Avir\Router\Driver;
-use Avir\Router\RouteInterface;
 use Avir\Router\RouteStation;
 use Symfony\Component\Yaml\Yaml;
 
 
-class Filter extends RouteStation implements RouteInterface
+class Filter extends RouteStation
 {
 
     private function getRoot(): string
@@ -30,30 +29,40 @@ class Filter extends RouteStation implements RouteInterface
     public function prepareData()
     {
         $routes = array_search($this->uri, Yaml::parseFile($this->getRoot()."/config/route/routes.yaml"));
-        if (!empty($routes)) {
-            preg_match('%.*\:\:%', $routes, $m);
-            $className = str_replace(['::', '"', "'"], '', $m[0]);
-            preg_match('%\:\:.*%', $routes, $m);
-            $methodName = str_replace(['::', '"', "'"], '', $m[0]);
-            $comp = json_decode(file_get_contents($this->getRoot() . "/composer.json"));
-            preg_match('%[.*]%', json_encode($comp->autoload->{'psr-4'}), $m);
-            preg_match('%\".*\\\\\"%', json_encode($comp->autoload->{'psr-4'}), $m);
-            $namespace = str_replace(['"', ''],'', $m[0]);
-            $namespace = str_replace('\\\\','\\', $namespace);
-            $class = '\\'.$namespace.'Controller\\'.$className;
-            //constant($class);
-            $m = new $class();
-            $m->$methodName();
-            var_dump(class_exists($class));
-            var_dump($class);
+        if($routes === false){
+            $this->uri_base = false;
+            return $this;
         }
-        //$this->uri_base = false;
-        //$this->data = $data;
+        if (!empty($routes)) {
 
+            $className = $this->getClassName($routes);
+            $methodName = $this->getMethodName($routes);
+            $namespace = $this->getNamespace();
+            $class = '\\'.$namespace.'Controller\\'.$className;
+            $controller = new $class();
+            return $controller->$methodName();
+        }
         return Driver::journal(Driver::getOperator(), $this);
     }
-    public function setData(): object
+
+    public function getClassName($routes)
     {
-        // TODO: Implement setData() method.
+        preg_match('%.*\:\:%', $routes, $m);
+        return str_replace(['::', '"', "'"], '', $m[0]);
+    }
+
+    public function getMethodName($routes)
+    {
+        preg_match('%\:\:.*%', $routes, $m);
+        return str_replace(['::', '"', "'"], '', $m[0]);
+    }
+
+    public function getNamespace()
+    {
+        $comp = json_decode(file_get_contents($this->getRoot() . "/composer.json"));
+        preg_match('%[.*]%', json_encode($comp->autoload->{'psr-4'}), $m);
+        preg_match('%\".*\\\\\"%', json_encode($comp->autoload->{'psr-4'}), $m);
+        $namespace = str_replace(['"', ''],'', $m[0]);
+        return str_replace('\\\\','\\', $namespace);
     }
 }

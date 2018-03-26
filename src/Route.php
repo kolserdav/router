@@ -8,27 +8,21 @@
 
 namespace Avir\Router;
 
+use Avir\Router\Listener\Filter;
 
-class Route extends RouteStation implements RouteInterface
+class Route extends RouteStation
 {
-    public function route()
+    public function route(array $data = array())
     {
-        parent::getParams();
-        return $this->prepareData();
-    }
-    public function getData(): object
-    {
-        return $this;
-    }
-    public function prepareData()
-    {
+        parent::getParams($data);
         return $this->setData();
     }
+
     public function setData()
     {
-        $oper = new Operator();
-        Driver::journal($oper, $this);
-        $result = $oper->getData();
+        $list = new Filter();
+        Driver::journal($list, $this);
+        $result = $list->getData();
         if ($result->uri_base === false){
             try {
                 throw new \InvalidArgumentException("404 ");
@@ -37,14 +31,6 @@ class Route extends RouteStation implements RouteInterface
                 echo $e->getMessage();
             }
         }
-        if ($oper->method_base === false){
-            try {
-                throw new \InvalidArgumentException("Unknow http method ");
-            }
-            catch (\Exception $e){
-                echo $e->getMessage();
-            }
-        }
-        return $oper;
+        return $this;
     }
 }

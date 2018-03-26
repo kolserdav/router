@@ -4,4 +4,4 @@ require 'vendor\autoload.php';
 use Avir\Router\Route;
 use Avir\Router\Listener\Filter;
 $r = new Route();
-$r->route();
+$r->route([1]);
