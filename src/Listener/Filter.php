@@ -21,8 +21,8 @@ class Filter extends RouteStation
      */
     public function getRoot(): string
     {
-        preg_match("%.*router%",dirname(__DIR__),$m);
-        return preg_filter('%.{1}router%','',$m[0]);
+        preg_match("%.*vendor%",dirname(__DIR__),$m);
+        return preg_filter('%.{1}vendor%','',$m[0]);
     }
 
     /**
