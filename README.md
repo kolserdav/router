@@ -46,7 +46,14 @@ User\UserConroller::usersPublic
 When coinciding field 'path' with URI, the specified controller will be turned on.
 If URI contains of number, it will be available in the controller as...
 ```php
-$this->id; 
+class SomeClass
+{
+    public $id
+    
+    public function someFunction(){
+        $this->id;
+    }
+} 
 ```  
 It's all... Very simple!
 
