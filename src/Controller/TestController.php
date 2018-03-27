@@ -13,10 +13,12 @@ class TestController
 {
     public function test()
     {
-        return 'test';
+        echo 'TestController::test';
+        return true;
     }
     public function tests()
     {
-        return 'tests';
+        echo 'TestController::test';
+        return true;
     }
 }

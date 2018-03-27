@@ -13,5 +13,6 @@ class ErrorPage
 {
    public function errorPage(){
        echo 'This is a page: 404';
+       return false;
    }
 }
