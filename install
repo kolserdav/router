@@ -32,5 +32,5 @@ echo "Make catalog /config/route ...\n";
 @mkdir("$root/config");
 @mkdir("$root/config/route");
 echo "Copy file /config/route/routes.yaml";
-copy('config/route/routes.yaml',"$root/config/route/routes.yaml");
+copy(__DIR__.'/config/route/routes.yaml',"$root/config/route/routes.yaml");
 echo "\n\nInstallation route module kolserdav/router is complete.\n";
