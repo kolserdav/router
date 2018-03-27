@@ -119,12 +119,24 @@ class Filter extends RouteStation
      */
     public function getRouteController()
     {
-        global $routes;
+        $search = $this->cycleForSearch($this->uri);
+        if($search == null && $this->uri[strlen($this->uri)-1] == '/'){
+            $uri = rtrim($this->uri,'/');
+            $search = $this->cycleForSearch($uri);
+        }
+        else if($search == null && $this->uri[strlen($this->uri)-1] != '/'){
+            $uri = $this->uri.'/';
+            $search = $this->cycleForSearch($uri);
+        }
+        return $search;
+    }
+    public function cycleForSearch($uri)
+    {
         $arrayNames = array_keys(Yaml::parseFile($this->getRoot() . "/config/route/routes.yaml"));
         $arrays = Yaml::parseFile($this->getRoot() . "/config/route/routes.yaml");
         $count = count($arrays);
         for ($i = 0; $i < $count; $i ++){
-            if (@$arrays[$arrayNames[$i]]['path'] == $this->uri){
+            if (@$arrays[$arrayNames[$i]]['path'] == $uri){
                 return $routes = $arrays[$arrayNames[$i]]['controller'];
             }
         }
