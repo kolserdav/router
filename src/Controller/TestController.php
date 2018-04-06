@@ -11,6 +11,7 @@ namespace Avir\Router\Controller;
 
 class TestController
 {
+
     public function test()
     {
         echo 'TestController::test';
@@ -18,7 +19,7 @@ class TestController
     }
     public function tests()
     {
-        echo 'TestController::test';
+        echo 'TestController::tests';
         return true;
     }
 }

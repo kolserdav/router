@@ -35,6 +35,7 @@ abstract class RouteStation
      * @var integer
      */
     protected $id;
+    protected $params;
 
     /**
      * @var string

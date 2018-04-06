@@ -55,6 +55,21 @@ class SomeClass
     }
 } 
 ```  
+Also you can transfer parameters to URI   
+```
+http://some.domains/some/uri/path?one=param1&two=param2&three=param3 //...
+```
+ and catch them in the controller as  
+ ```php
+class SomeClass
+{
+    public $params;
+    
+    public function someFunction(){
+        $this->params; //[ one : param1, two : param2, three : param3 ]
+    }
+} 
+ ```
 It's all... Very simple!
 
 

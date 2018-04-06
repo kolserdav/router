@@ -48,6 +48,10 @@ class Test extends TestCase
     public function testGetNamespace()
     {
         $list = new Filter();
+
+        /**
+         * Rename 'Avir\Router' to your namespace
+         */
         $this->assertEquals('Avir\Router\\', $list->getNamespace());
     }
     public function testGetMethodName()

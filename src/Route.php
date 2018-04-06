@@ -50,6 +50,7 @@ class Route extends RouteStation
             $controller = new $result->class();
             $operation = $result->operation;
             $controller->id = $result->id;
+            $controller->params = $result->params;
             $controller->$operation();
             return true;
         }

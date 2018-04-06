@@ -32,7 +32,13 @@ class Filter extends RouteStation
      */
     public function filterUri()
     {
+        $getParams = $this->searchGetParams($this->uri);
+        if ($getParams){
+            $this->uri = $this->delString($this->uri, $getParams);
+            $this->params = $this->getGetParams($getParams);
+        }
         $search = preg_match('%[\d]+%', $this->uri, $m);
+
 
         /**
          * This block is triggered when uri has digits
@@ -76,6 +82,94 @@ class Filter extends RouteStation
             return $this;
         }
         return $this;
+    }
+    public function searchGetParams($uri)
+    {
+        if(preg_match('%\?.*%', $uri, $m)){
+            return $m[0];
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $params_string
+     * @return array
+     */
+    public function getGetParams(string $params_string): array
+    {
+        $checkQuest = preg_match('%\&.*%', $params_string, $m);
+        if(!$checkQuest){
+            $line = $this->delString($params_string,'?');
+            return $this->getArrayParams($line);
+        }
+        else {
+            preg_match('%\?\w*\=\w*\&%', $this->searchGetParams($params_string), $m);
+            $n = $this->searchAnd($params_string);
+            $n[0][] = $this->delString($m[0],['?','&']);
+            $arr = array_map(function($val){
+                return $this->delString($val,'&');
+            },$n[0]);
+            $keys = array_map(function ($val){
+                preg_match( '%\w*\=%', $val, $z);
+                return $this->delString($z[0], '=');
+            }, $arr);
+            $values = array_map(function ($val){
+                preg_match( '%\=\w*%', $val, $z);
+                return $this->delString($z[0], '=');
+            }, $arr);
+            $result = array_combine($keys, $values);
+
+            return $result;
+        }
+    }
+
+    /**
+     * @param string $str
+     * @return bool|array
+     */
+    public function searchAnd(string $str)
+    {
+        if(preg_match_all('%\&\w*\=\w*%', $str, $n)){
+            return $n;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $expression
+     * @return mixed
+     */
+    public function getArrayParams(string $expression)
+    {
+        if (preg_match('%.*\=%', $expression, $m)){
+            $key = trim(str_replace('=', '', $m[0]));
+            if(preg_match('%\=.*%', $expression, $n)){
+                $value = trim(str_replace('=', '', $n[0]));
+            }
+            else {
+                $value = 'empty';
+            }
+            $result[$key] = $value;
+            return $result;
+        }
+        else {
+
+            return ['Expression'  => 'not found'];
+        }
+    }
+
+    /**
+     * @param string $string
+     * @param string|array $del_string
+     * @return string
+     */
+    public function delString(string $string,$del_string): string
+    {
+        return str_replace($del_string, '', $string);
     }
 
     /**
