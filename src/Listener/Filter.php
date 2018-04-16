@@ -32,6 +32,15 @@ class Filter extends RouteStation
      */
     public function filterUri()
     {
+        /**
+         * Setting 'namespace'
+         */
+        $this->namespace = $this->getNamespace();
+
+        if($this->uri === '/respond-require-data'){
+            require __DIR__.'/../Respondent/responder.php';
+            exit();
+        }
         $getParams = $this->searchGetParams($this->uri);
         if ($getParams){
             $this->uri = $this->delString($this->uri, $getParams);
@@ -60,11 +69,6 @@ class Filter extends RouteStation
         }
 
         /**
-         * Setting 'namespace'
-         */
-        $this->namespace = $this->getNamespace();
-
-        /**
          * 404
          */
         if($routes === null){
@@ -76,11 +80,16 @@ class Filter extends RouteStation
          * Forms pages
          */
         if (!empty($routes)) {
-            $className = $this->getClassName($routes);
-            $this->operation = $this->getMethodName($routes);
-            $this->class = '\\'.$this->namespace.'Controller\\'.$className;
-            return $this;
+
+            return $this->getClassAndMethod($routes);
         }
+        return $this;
+    }
+    public function getClassAndMethod($routes)
+    {
+        $className = $this->getClassName($routes);
+        $this->operation = $this->getMethodName($routes);
+        $this->class = '\\'.$this->namespace.'Controller\\'.$className;
         return $this;
     }
     public function searchGetParams($uri)
