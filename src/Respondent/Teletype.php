@@ -8,20 +8,16 @@
 
 namespace Avir\Router\Respondent;
 
-use Avir\Templater\Render;
+use Avir\Templater\Module\Render;
+use Avir\Templater\Module\Config;
 
 class Teletype
 {
     public static function ajaxRequest()
     {
-        $template = new Render($_REQUEST, null);
-        $template->ajax();
-        //$host = $_REQUEST['host'];
-        //preg_match('%https?\:\/\/\w*\.\w*\/%', $host, $m);
-        //$result = $m[0];
-        //$result = json_decode($result);
-        //$nameCookie = $result->name->cookie;
-        //var_dump($result);
-        //$template->ajaxData = $result;
+        if(class_exists(Render::class)) {
+            $template = new Render($_REQUEST, null);
+            $template->ajax();
+        }
     }
 }
